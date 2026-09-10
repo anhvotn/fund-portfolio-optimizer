@@ -1,0 +1,15 @@
+# Personal data / working files — do NOT publish
+*.xlsx
+*.xls
+*.pkl
+UBS_house-view/
+fund-explorer.html
+
+# Your real price data — reveals which funds you hold, keep private
+_chf_prices.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
