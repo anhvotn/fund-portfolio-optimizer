@@ -24,9 +24,19 @@ pip install -r requirements.txt
 python portfolio_optimize.py
 ```
 
-By default it reads `_chf_prices.csv` (date + one CHF price column per fund) and
-prints each method's weights plus the portfolio's annualised return, volatility
-and Sharpe ratio.
+It reads your prices from `_chf_prices.csv` (date + one CHF price column per
+fund) and prints each method's weights plus the portfolio's annualised return,
+volatility and Sharpe ratio. If that file isn't present it automatically falls
+back to the bundled `_chf_prices.example.csv`, so a fresh clone runs out of the
+box on synthetic data.
+
+**Bring your own data.** `_chf_prices.csv` is git-ignored and **not** included in
+this repo — a real price file reveals which funds you hold. To use your own
+prices, copy the example and replace its contents:
+
+```bash
+cp _chf_prices.example.csv _chf_prices.csv
+```
 
 ## Input data
 
