@@ -29,20 +29,30 @@ Requirements:  pip install PyPortfolioOpt pandas numpy openpyxl
 Usage:         python portfolio_optimize.py
 """
 
+import os
 import numpy as np
 import pandas as pd
 from pypfopt import expected_returns, risk_models, EfficientFrontier
 from pypfopt.hierarchical_portfolio import HRPOpt
 
-PRICES_CSV = "_chf_prices.csv"   # date + one CHF price column per fund
-WEIGHT_CAP = 0.20                # max weight per fund for the MVO methods
-RISK_FREE  = 0.0                 # CHF cash ~0; adjust if you like
+PRICES_CSV  = "_chf_prices.csv"          # your real data (git-ignored, private)
+EXAMPLE_CSV = "_chf_prices.example.csv"  # synthetic fallback shipped in the repo
+WEIGHT_CAP  = 0.20                        # max weight per fund for the MVO methods
+RISK_FREE   = 0.0                         # CHF cash ~0; adjust if you like
 
 # ----------------------------------------------------------------------
 # 1. Load CHF prices  (rebuild this file from the tracker once it has
 #    enough overlapping daily history - see build_chf_prices() below.)
 # ----------------------------------------------------------------------
-prices = pd.read_csv(PRICES_CSV, parse_dates=["date"]).set_index("date").sort_index()
+# Use your real prices if present, otherwise fall back to the synthetic example
+# so the script runs immediately on a fresh clone.
+csv_path = PRICES_CSV if os.path.exists(PRICES_CSV) else EXAMPLE_CSV
+if csv_path == EXAMPLE_CSV:
+    print(f"[note] '{PRICES_CSV}' not found - running on synthetic example data "
+          f"('{EXAMPLE_CSV}'). Copy the example to '{PRICES_CSV}' and add your "
+          f"own prices for real results.\n")
+
+prices = pd.read_csv(csv_path, parse_dates=["date"]).set_index("date").sort_index()
 prices = prices.dropna(how="any")
 print(f"Loaded {prices.shape[1]} funds x {len(prices)} trading days "
       f"({prices.index.min().date()} -> {prices.index.max().date()})\n")
